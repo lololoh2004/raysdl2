@@ -1,12 +1,12 @@
 #include "rsdl.hpp"
 #include "imgui/imgui.h"
 
-#include <string>
+//#include <string>
 
 // EXAMPLE OF USING LIB
 int main(){
     rsdl::initWindow(640, 480, "DEBUG_TEST.XE");
-    rsdl::setTargetFPS(60);
+    rsdl::setTargetFPS(0);
 
     rsdl::imgui::setup(true);
 

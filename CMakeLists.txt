@@ -45,6 +45,7 @@ set(RSDL_BASE
         src/imgui/imgui_widgets.cpp
         src/imgui/imgui_tables.cpp
         src/imgui/imgui_demo.cpp
+        src/load_funcs.cpp
 )
 
 add_library(${LIB_NAME} STATIC

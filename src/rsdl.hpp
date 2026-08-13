@@ -23,12 +23,17 @@ struct SDL_GPUCommandBuffer;
 struct SDL_GPURenderPass;
 struct SDL_GPUTexture;
 union SDL_Event;
+struct SDL_GPUShader;
 
 
 namespace rsdl{
 
 struct Color{
     unsigned char r, g, b, a;
+};
+struct Shader{
+    SDL_GPUShader* vert;
+    SDL_GPUShader* frag;
 };
 enum class LogLvl{
     Info,
@@ -90,6 +95,8 @@ WRAPPER void     fadeLambdaColor(Color& c, float alpha);
 WRAPPER Color    fadeColor(Color c, float alpha);
 WRAPPER uint32_t colorToInt(Color c);
 WRAPPER Color    intToColor(uint32_t intC);
+
+WRAPPER Shader loadShader(const char* vertFile, const char* fragFile);
 
 WRAPPER void drawRectangle(int posX, int posY, int width, int height, Color color);
 WRAPPER void drawCircle   (int centerX, int centerY, float radius, Color color);
