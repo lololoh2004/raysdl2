@@ -35,22 +35,7 @@ void clearBG(Color c){
         cmdBuffer, &colorInfo,
         1, nullptr);
 }
-void drawRectangle(int posX, int posY, int width, int height, Color color){
-    if (!cmdBuffer) return;
-    if (!SDL_WaitAndAcquireGPUSwapchainTexture(cmdBuffer, window, &currentSwapchainTexture,
-        nullptr, nullptr)) return;
 
-    SDL_GPUColorTargetInfo colorInfo{};
-    colorInfo.clear_color = {
-        static_cast<float>(color.r) / 255.0f,
-        static_cast<float>(color.g) / 255.0f,
-        static_cast<float>(color.b) / 255.0f,
-    };
-    colorInfo.load_op = SDL_GPU_LOADOP_LOAD;
-    colorInfo.store_op = SDL_GPU_STOREOP_STORE;
-
-    //
-}
 void endDraw(){
     if (currentRenderPass != nullptr){
         SDL_EndGPURenderPass(currentRenderPass);
