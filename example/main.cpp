@@ -1,8 +1,6 @@
 #include "rsdl.hpp"
 #include "imgui/imgui.h"
 
-//#include <string>
-
 // EXAMPLE OF USING LIB
 int main(){
     rsdl::initWindow(640, 480, "DEBUG_TEST.XE");
@@ -11,8 +9,6 @@ int main(){
     rsdl::imgui::setup(true);
 
     while (!rsdl::windowShouldClose()){
-        // std::string dt_str = std::to_string(rsdl::getRandVal(1,6));
-        // rsdl::log(dt_str.c_str(), rsdl::LogLvl::Info);
         rsdl::beginDraw();
             rsdl::clearBG(rsdl::DARKGRAY);
             rsdl::imgui::begin();

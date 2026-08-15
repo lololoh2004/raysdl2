@@ -1,4 +1,7 @@
-#include "rsdl.hpp"
+#include "include/render.h"
+#include "include/imgui_bridge.h"
+#include "include/window.h"
+
 #include "SDL3/SDL_gpu.h"
 
 namespace rsdl{

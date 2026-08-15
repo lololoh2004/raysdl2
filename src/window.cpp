@@ -1,8 +1,11 @@
-#include "rsdl.hpp"
 #include "SDL3/SDL_init.h"
 #include "SDL3/SDL_render.h"
 #include "SDL3/SDL_timer.h"
 #include "SDL3/SDL_video.h"
+
+#include "include/window.h"
+#include "include/all_utils.h"
+#include "include/imgui_bridge.h"
 
 namespace rsdl{
 
