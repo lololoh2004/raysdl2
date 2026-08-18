@@ -4,7 +4,7 @@
 // EXAMPLE OF USING LIB
 int main(){
     rsdl::initWindow(640, 480, "DEBUG_TEST.XE");
-    rsdl::setTargetFPS(0);
+    rsdl::setTargetFPS(144);
 
     rsdl::imgui::setup(true);
 

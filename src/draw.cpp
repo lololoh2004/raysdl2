@@ -10,42 +10,52 @@ namespace{
 SDL_GPUCommandBuffer* cmdBuffer = nullptr;
 SDL_GPURenderPass* currentRenderPass = nullptr;
 SDL_GPUTexture* currentSwapchainTexture = nullptr;
+
+SDL_FColor clearColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 }
 
 void beginDraw(){
     cmdBuffer = SDL_AcquireGPUCommandBuffer(gpuDevice);
     currentRenderPass = nullptr;
+    currentSwapchainTexture = nullptr;
+    if (cmdBuffer){
+        SDL_WaitAndAcquireGPUSwapchainTexture(cmdBuffer, window, &currentSwapchainTexture, nullptr, nullptr);
+    }
 }
 void clearBG(Color c){
-    if (!cmdBuffer) return;
-
-    // Uint32 width, height;
-    if (!SDL_WaitAndAcquireGPUSwapchainTexture(cmdBuffer, window, &currentSwapchainTexture,
-        nullptr, nullptr)) return;
-
-    SDL_GPUColorTargetInfo colorInfo{};
-    colorInfo.clear_color = {
+    clearColor = {
         static_cast<float>(c.r) / 255.0f,
         static_cast<float>(c.g) / 255.0f,
         static_cast<float>(c.b) / 255.0f,
         static_cast<float>(c.a) / 255.0f
     };
-    colorInfo.load_op = SDL_GPU_LOADOP_CLEAR;
-    colorInfo.store_op = SDL_GPU_STOREOP_STORE;
-    colorInfo.texture = currentSwapchainTexture;
+}
 
+void beginRenderPassInternal(){
+    if (currentRenderPass ||!cmdBuffer || !currentSwapchainTexture) return;
+
+    SDL_GPUColorTargetInfo colorInfo = {
+        .texture = currentSwapchainTexture,
+        .clear_color = clearColor,
+        .load_op = SDL_GPU_LOADOP_CLEAR,
+        .store_op = SDL_GPU_STOREOP_STORE,
+    };
     currentRenderPass = SDL_BeginGPURenderPass(
-        cmdBuffer, &colorInfo,
-        1, nullptr);
+        cmdBuffer,
+        &colorInfo,
+        1,
+        nullptr
+    );
 }
 
 void endDraw(){
+    beginRenderPassInternal();
+
     if (currentRenderPass != nullptr){
         SDL_EndGPURenderPass(currentRenderPass);
         currentRenderPass = nullptr;
     }
-    if (currentSwapchainTexture != nullptr) {
-        //imgui::doRenderPass(cmdBuffer, currentSwapchainTexture);
+    if (currentSwapchainTexture != nullptr && cmdBuffer) {
         imgui::doRenderPass(currentSwapchainTexture, cmdBuffer);
     }
     if (cmdBuffer){
@@ -60,6 +70,9 @@ void endDraw(){
 }
 
 SDL_GPUCommandBuffer* getCurCmdBuffer()  { return cmdBuffer; }
-SDL_GPURenderPass*    getCurRenderPass() { return currentRenderPass; }
+SDL_GPURenderPass*    getCurRenderPass(){
+    beginRenderPassInternal();
+    return currentRenderPass;
+}
 
 }
