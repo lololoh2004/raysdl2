@@ -6,6 +6,7 @@
 #include "include/window.h"
 #include "include/all_utils.h"
 #include "include/imgui_bridge.h"
+#include "include/render.h"
 
 namespace rsdl{
 
@@ -40,6 +41,7 @@ void initWindow(int width, int height, const char *title){
         return;
     }
     SDL_ClaimWindowForGPUDevice(gpuDevice, window);
+    initDraw();
     setCfgFlags(saved_flags);
 
     last_time = SDL_GetPerformanceCounter();

@@ -32,6 +32,11 @@ struct Shader{
 struct Color{
     unsigned char r, g, b, a;
 };
+struct Vertex{
+    float x,y,z;
+    float u, v;
+    Color color;
+};
 namespace rsdl{
 inline constexpr Color DARKGRAY = { 33, 37, 41, 255 };
 inline constexpr Color WHITE    = { 245, 245, 245, 255 };

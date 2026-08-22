@@ -12,6 +12,7 @@ WRAPPER SDL_GPURenderPass*    getCurRenderPass();
 WRAPPER Shader loadShader(const char* vertFile, const char* fragFile);
 
 // State
+WRAPPER void initDraw();
 WRAPPER void beginDraw();
 WRAPPER void endDraw();
 

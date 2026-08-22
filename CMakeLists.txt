@@ -30,7 +30,7 @@ set(RSDL_BASE
         # Base
         src/rsdl.hpp
         src/window.cpp
-        src/draw.cpp
+        src/render/draw.cpp
         src/log.cpp
         src/math.cpp
         src/utils.cpp
@@ -53,6 +53,7 @@ set(RSDL_BASE
         src/include/imgui_bridge.h
         src/include/math.h
         src/include/color.h
+        src/render/loaders.cpp
 )
 
 add_library(${LIB_NAME} STATIC
