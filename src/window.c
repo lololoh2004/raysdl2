@@ -3,41 +3,40 @@
 #include "SDL3/SDL_timer.h"
 #include "SDL3/SDL_video.h"
 
-#include "include/window.h"
-#include "include/all_utils.h"
-#include "include/imgui_bridge.h"
-#include "include/render.h"
+#include "rsdl/window.h"
+#include "rsdl/render.h"
+#include "rsdl/all_utils.h"
 
-namespace rsdl{
+#include <stdio.h>
+#include <stdbool.h>
 
-namespace{
-bool running = false;
+SDL_Window*    window = NULL;
+SDL_GPUDevice* gpuDevice = NULL;
 
-uint64_t last_time = 0;
-float delta  = 0.0f;
-unsigned int target_fps = 30;
-
-unsigned int saved_flags = FLAG_WINDOW_RESIZABLE;
-}
+static bool running = false;
+static uint64_t last_time = 0;
+static float delta  = 0.0f;
+static unsigned int target_fps = 30;
+static unsigned int saved_flags = FLAG_WINDOW_RESIZABLE;
 
 
 void initWindow(int width, int height, const char *title){
-    log("Hello World!(print);", LogLvl::Info);
+    printf("Hello World!(print);");
     SDL_Init(SDL_INIT_VIDEO);
     window = SDL_CreateWindow(
         title,
         width, height,
         SDL_WINDOW_VULKAN | SDL_WINDOW_RESIZABLE);
     if (!window){
-        log(SDL_GetError(), LogLvl::Err);
+        printf("%s", SDL_GetError());
         return;
     }
     gpuDevice = SDL_CreateGPUDevice(
         SDL_GPU_SHADERFORMAT_SPIRV,
         true,
-        nullptr);
+        NULL);
     if (!gpuDevice){
-        log(SDL_GetError(), LogLvl::Err);
+        printf("%s", SDL_GetError());
         return;
     }
     SDL_ClaimWindowForGPUDevice(gpuDevice, window);
@@ -51,7 +50,6 @@ void initWindow(int width, int height, const char *title){
 void pollEvents(){
     SDL_Event event;
     while(SDL_PollEvent(&event)){
-        imgui::pollEvents(event);
         if (event.type == SDL_EVENT_QUIT || event.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED)
             running = false;
     }
@@ -78,27 +76,27 @@ unsigned int getCfgFlags(){
 void updateTimer(){
     uint64_t current_time = SDL_GetPerformanceCounter();
     if (target_fps > 0){
-        float target_frame_time = 1.0f / target_fps;
-        float real_delta = static_cast<float>(current_time - last_time) / static_cast<float>(SDL_GetPerformanceFrequency());
+        float target_frame_time = 1.0f / (float)target_fps;
+        float real_delta = (float)(current_time - last_time) / (float)SDL_GetPerformanceFrequency();
 
         if (real_delta < target_frame_time){
             float time_to_wait = (target_frame_time - real_delta) * 1000.0f;
-            SDL_Delay(static_cast<uint32_t>(time_to_wait));
+            SDL_Delay((uint32_t)time_to_wait);
         }
         current_time = SDL_GetPerformanceCounter();
     }
 
-    delta = static_cast<float>(current_time - last_time) / static_cast<float>(SDL_GetPerformanceFrequency());
+    delta = (float)(current_time - last_time) / (float)SDL_GetPerformanceFrequency();
     last_time = current_time;
 }
 float getDeltaTime(){ return delta; }
 int getFPS(){
-    return delta > 0.000001f ? static_cast<int>(1.0f / delta) : 9999;
+    return delta > 0.000001f ? (int)(1.0f / delta) : 9999;
 }
 void setTargetFPS(int fps){
     target_fps = fps;
 }
-double getTime() { return static_cast<double>(SDL_GetTicks()) / 1000.0; }
+double getTime() { return (double)(SDL_GetTicks()) / 1000.0; }
 
 void hideCursor() { SDL_HideCursor(); }
 void showCursor() { SDL_ShowCursor(); }
@@ -114,18 +112,14 @@ bool windowShouldClose(){
     return !running;
 }
 void closeWindow() { running = false; }
-void exit(){
-    imgui::shutdown();
-
+void rsdlExit(){
     if (gpuDevice){
         SDL_DestroyGPUDevice(gpuDevice);
-        gpuDevice = nullptr;
+        gpuDevice = NULL;
     }
     if (window){
         SDL_DestroyWindow(window);
-        window = nullptr;
+        window = NULL;
     }
     SDL_Quit();
-}
-
 }

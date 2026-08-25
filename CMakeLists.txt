@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 4.1)
-project(raysdl2)
+project(raysdl2 C CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY         "${CMAKE_SOURCE_DIR}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}")
-
-option(IMGUI_RSDL_BACKEND "Build rsdl framework with Dear ImGui support" ON)
 
 set(LIB_NAME "rsdl")
 
@@ -28,42 +28,25 @@ FetchContent_MakeAvailable(SDL3)
 # ==== RaylibSDL ====
 set(RSDL_BASE
         # Base
-        src/rsdl.hpp
-        src/window.cpp
-        src/render/draw.cpp
-        src/log.cpp
-        src/math.cpp
-        src/utils.cpp
-        src/color.cpp
-        # imgui (bridge and backend)
-        src/imgui/bridge.cpp
-        src/imgui/imgui_impl_sdl3.cpp
-        src/imgui/imgui_impl_sdlgpu3.cpp
-        # imgui
-        src/imgui/imgui.cpp
-        src/imgui/imgui_draw.cpp
-        src/imgui/imgui_widgets.cpp
-        src/imgui/imgui_tables.cpp
-        src/imgui/imgui_demo.cpp
-        src/include/window.h
-        src/include/render.h
-        src/include/all_utils.h
-        src/include/dlib.h
-        src/common.h
-        src/include/imgui_bridge.h
-        src/include/math.h
-        src/include/color.h
-        src/render/loaders.cpp
+        include/rsdl.h
+        src/window.c
+        src/render/draw.c
+        src/render/loaders.c
+        src/math.c
+        src/utils.c
+        src/color.c
 )
 
 add_library(${LIB_NAME} STATIC
     ${RSDL_BASE}
 )
 
-target_include_directories(${LIB_NAME} PUBLIC src)
+target_include_directories(${LIB_NAME} PUBLIC
+        src
+        include
+)
 target_link_libraries(${LIB_NAME} PUBLIC
         SDL3-shared
-        "-lstdc++exp"
 )
 
 

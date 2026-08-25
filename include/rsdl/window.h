@@ -2,7 +2,7 @@
 
 #include "common.h"
 
-namespace rsdl{
+#include <stdbool.h>
 
 // Init
 WRAPPER void initWindow(int width, int height, const char *title);
@@ -10,7 +10,7 @@ WRAPPER void initWindow(int width, int height, const char *title);
 // Close funcs.
 WRAPPER bool windowShouldClose();
 WRAPPER void closeWindow();
-WRAPPER void exit();
+WRAPPER void rsdlExit();
 
 // Time funcs.
 WRAPPER float  getDeltaTime();
@@ -26,4 +26,3 @@ WRAPPER bool IsCursorHidden();
 WRAPPER void hideCursor();
 WRAPPER void showCursor();
 WRAPPER void disableCursor();
-}

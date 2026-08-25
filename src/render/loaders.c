@@ -1,20 +1,20 @@
-#include "include/render.h"
-
-#include <string>
+#include "rsdl/render.h"
 
 #include "SDL3/SDL_gpu.h"
 #include "SDL3/SDL_iostream.h"
 
-namespace rsdl{
+#include <stdio.h>
 
-void* readShaderFile(const char* shaderFile, size_t& shaderFileSize){
-    std::string fullPath = "./resources/shaders/" + std::string(shaderFile) + ".spv";
-    return SDL_LoadFile(fullPath.c_str(), &shaderFileSize);
+
+void* readShaderFile(const char* shaderFile, size_t* shaderFileSize){
+    char fullPath[512];
+    snprintf(fullPath, sizeof(fullPath), "./resources/shaders/%s.spv", shaderFile);
+    return SDL_LoadFile(fullPath, shaderFileSize);
 }
 SDL_GPUShader* createSingleGPUShader(const void* contentPtr, size_t fileSize, SDL_GPUShaderStage stage){
     SDL_GPUShaderCreateInfo shaderInfo = {
         .code_size = fileSize,
-        .code = static_cast<const Uint8*>(contentPtr),
+        .code = (const Uint8*)contentPtr,
         .entrypoint = "main",
         .format = SDL_GPU_SHADERFORMAT_SPIRV,
         .stage = stage,
@@ -28,25 +28,23 @@ SDL_GPUShader* createSingleGPUShader(const void* contentPtr, size_t fileSize, SD
 }
 
 Shader loadShader(const char* vertFile, const char* fragFile){
-    if (gpuDevice == nullptr) return {};
+    if (gpuDevice == NULL) return (Shader){};
 
     // === VERTICAL SHADER ===
     size_t vsFileSize = 0;
-    auto vsContentPtr = readShaderFile(vertFile, vsFileSize);
-    if(vsContentPtr == nullptr) {
-        return {};
-    }
+    void* vsContentPtr = readShaderFile(vertFile, &vsFileSize);
+    if(vsContentPtr == NULL) return (Shader){};
 
     SDL_GPUShader* vertShader = createSingleGPUShader(vsContentPtr, vsFileSize, SDL_GPU_SHADERSTAGE_VERTEX);
-    if(vertShader == nullptr) return{};
+    if(vertShader == NULL) return(Shader){};
 
     // === FRAGMENT SHADER ===
     size_t fsFileSize = 0;
-    auto fsContentPtr = readShaderFile(fragFile, fsFileSize);
-    if(fsContentPtr == nullptr) {
+    void* fsContentPtr = readShaderFile(fragFile, &fsFileSize);
+    if(fsContentPtr == NULL) {
         SDL_free(vsContentPtr);
         SDL_ReleaseGPUShader(gpuDevice, vertShader);
-        return {};
+        return (Shader){};
     }
 
     SDL_GPUShader* fragShader = createSingleGPUShader(fsContentPtr, fsFileSize, SDL_GPU_SHADERSTAGE_FRAGMENT);
@@ -54,12 +52,10 @@ Shader loadShader(const char* vertFile, const char* fragFile){
     SDL_free(vsContentPtr);
     SDL_free(fsContentPtr);
 
-    if(fragShader == nullptr){
+    if(fragShader == NULL){
         SDL_ReleaseGPUShader(gpuDevice, vertShader);
-        return{};
+        return (Shader){};
     }
 
-    return Shader{ vertShader, fragShader };
-}
-
+    return (Shader){ vertShader, fragShader };
 }

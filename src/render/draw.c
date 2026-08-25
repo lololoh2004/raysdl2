@@ -1,21 +1,19 @@
-#include "../include/render.h"
-#include "../include/imgui_bridge.h"
-#include "../include/window.h"
-#include "include/all_utils.h"
+#include <stdio.h>
+#include <stddef.h>
+
+#include "rsdl/render.h"
+#include "rsdl/window.h"
 
 #include "SDL3/SDL_gpu.h"
 
-namespace rsdl{
-namespace{
-SDL_GPUCommandBuffer* cmdBuffer = nullptr;
-SDL_GPURenderPass* currentRenderPass = nullptr;
-SDL_GPUTexture* currentSwapchainTexture = nullptr;
-Shader defltShader = {};
 
-SDL_GPUGraphicsPipeline* pipln;
+static SDL_GPUCommandBuffer* cmdBuffer = NULL;
+static SDL_GPURenderPass* currentRenderPass = NULL;
+static SDL_GPUTexture* currentSwapchainTexture = NULL;
+static Shader defltShader = {};
+static SDL_GPUGraphicsPipeline* pipln;
+static SDL_FColor clearColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 
-SDL_FColor clearColor = { 0.0f, 0.0f, 0.0f, 1.0f };
-}
 
 void initDraw(){
     SDL_GPUColorTargetDescription colorDesc = {
@@ -40,7 +38,7 @@ void initDraw(){
         .instance_step_rate = 0,
     };
 
-    SDL_GPUVertexAttribute attrs[3]{{
+    SDL_GPUVertexAttribute attrs[3] = {{
         .location = 0,
         .buffer_slot = 0,
         .format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT3,
@@ -58,7 +56,7 @@ void initDraw(){
     }
     };
 
-    piplnInfo.vertex_input_state = {
+    piplnInfo.vertex_input_state = (SDL_GPUVertexInputState){
         .vertex_buffer_descriptions = &buffDesc,
         .num_vertex_buffers = 1,
         .vertex_attributes = attrs,
@@ -66,15 +64,15 @@ void initDraw(){
     };
 
     pipln = SDL_CreateGPUGraphicsPipeline(gpuDevice, &piplnInfo);
-    if (pipln == nullptr) {
-        log("Poshel Nahui", LogLvl::Err);
+    if (pipln == NULL) {
+        printf("SDL_CreateGPUGraphicsPipeline failed: %s\n", SDL_GetError());
     }
 }
 
 void closeDraw(){
     if (pipln){
         SDL_ReleaseGPUGraphicsPipeline(gpuDevice, pipln);
-        pipln = nullptr;
+        pipln = NULL;
     }
     if (defltShader.vert){
         SDL_ReleaseGPUShader(gpuDevice, defltShader.vert);
@@ -86,18 +84,22 @@ void closeDraw(){
 
 void beginDraw(){
     cmdBuffer = SDL_AcquireGPUCommandBuffer(gpuDevice);
-    currentRenderPass = nullptr;
-    currentSwapchainTexture = nullptr;
-    if (cmdBuffer){
-        SDL_WaitAndAcquireGPUSwapchainTexture(cmdBuffer, window, &currentSwapchainTexture, nullptr, nullptr);
-    }
+    currentRenderPass = NULL;
+    currentSwapchainTexture = NULL;
+    if (cmdBuffer)
+        SDL_WaitAndAcquireGPUSwapchainTexture(
+            cmdBuffer,
+            window,
+            &currentSwapchainTexture,
+            NULL,
+            NULL);
 }
 void clearBG(Color c){
-    clearColor = {
-        static_cast<float>(c.r) / 255.0f,
-        static_cast<float>(c.g) / 255.0f,
-        static_cast<float>(c.b) / 255.0f,
-        static_cast<float>(c.a) / 255.0f
+    clearColor = (SDL_FColor){
+        (float)c.r / 255.0f,
+        (float)c.g / 255.0f,
+        (float)c.b / 255.0f,
+        (float)c.a / 255.0f
     };
 }
 
@@ -114,29 +116,26 @@ void beginRenderPassInternal(){
         cmdBuffer,
         &colorInfo,
         1,
-        nullptr
+        NULL
     );
 }
 
 void endDraw(){
     beginRenderPassInternal();
 
-    if (currentRenderPass != nullptr){
+    if (currentRenderPass != NULL){
         SDL_EndGPURenderPass(currentRenderPass);
-        currentRenderPass = nullptr;
-    }
-    if (currentSwapchainTexture != nullptr && cmdBuffer) {
-        imgui::doRenderPass(currentSwapchainTexture, cmdBuffer);
+        currentRenderPass = NULL;
     }
     if (cmdBuffer){
         SDL_SubmitGPUCommandBuffer(cmdBuffer);
-        cmdBuffer = nullptr;
-        currentSwapchainTexture = nullptr;
+        cmdBuffer = NULL;
+        currentSwapchainTexture = NULL;
     }
     if (windowShouldClose()){
         if (gpuDevice) SDL_WaitForGPUIdle(gpuDevice);
         closeDraw();
-        exit();
+        rsdlExit();
     }
 }
 
@@ -144,5 +143,4 @@ SDL_GPUCommandBuffer* getCurCmdBuffer()  { return cmdBuffer; }
 SDL_GPURenderPass*    getCurRenderPass(){
     beginRenderPassInternal();
     return currentRenderPass;
-}
 }
