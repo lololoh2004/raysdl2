@@ -1,6 +1,6 @@
 .idea/
 cmake-build-debug/
-.original_raylib6/
+_lib/
 *.exe
 *.dll
 *.ini

@@ -26,8 +26,8 @@ union  SDL_Event;
 struct SDL_GPUShader;
 
 typedef struct Shader {
-    struct SDL_GPUShader* vert;
-    struct SDL_GPUShader* frag;
+    SDL_GPUShader* vert;
+    SDL_GPUShader* frag;
 } Shader;
 typedef struct Color{
     unsigned char r, g, b, a;
