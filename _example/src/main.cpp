@@ -1,23 +1,24 @@
-#include <cstdio>
-#include "rsdl.h"
 #include "rsdl_raylib_wrap.h"
+extern "C" {
+// #include "rsdl/log.h"
+}
 
 // EXAMPLE OF USING LIB
 int main(){
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+    constexpr int screenWidth = 800;
+    constexpr int screenHeight = 450;
 
     InitWindow(screenWidth, screenHeight, "raylib example - draw square");
     // SetTargetFPS(60);
     //
-    // while (!WindowShouldClose()){
-    //     BeginDrawing();
-    //
-    //     ClearBackground(RAYWHITE);
-    //     DrawRectangle(350, 175, 100, 100, RED);
-    //
-    //     EndDrawing();
-    // }
+    while (!WindowShouldClose()){
+        BeginDrawing();
+        //
+        ClearBackground(RAYWHITE);
+        //     DrawRectangle(350, 175, 100, 100, RED);
+        //
+        EndDrawing();
+    }
     //
     CloseWindow();
 

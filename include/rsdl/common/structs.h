@@ -12,15 +12,15 @@ union  SDL_Event;
 struct SDL_GPUShader;
 
 
-typedef struct Shader {
+typedef struct shader {
     struct SDL_GPUShader* vert;
     struct SDL_GPUShader* frag;
-} Shader;
+} shader;
 typedef struct Color{
     unsigned char r, g, b, a;
-} Color;
-typedef struct Vertex{
+} clr;
+typedef struct vert{
     float x,y,z;
     float u, v;
-    Color color;
-} Vertex;
+    clr color;
+} vert;

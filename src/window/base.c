@@ -8,6 +8,8 @@
 
 
 SDL_Window* g_window = NULL;
+SDL_GPUDevice* g_gpuDevice = NULL;
+static bool s_isWindow = false;
 
 bool initWindow(int width, int height, const char* title){
     if (!SDL_Init(SDL_INIT_VIDEO)){
@@ -25,8 +27,8 @@ bool initWindow(int width, int height, const char* title){
     rsdl_log("Window created");
 
     SDL_GPUShaderFormat formats = SDL_GPU_SHADERFORMAT_SPIRV | SDL_GPU_SHADERFORMAT_MSL | SDL_GPU_SHADERFORMAT_DXIL;
-    SDL_GPUDevice* gpu_device = SDL_CreateGPUDevice(formats, true, NULL);
-    if (!gpu_device){
+    g_gpuDevice = SDL_CreateGPUDevice(formats, true, NULL);
+    if (!g_gpuDevice){
         rsdl_logf("GPU device creation failed : %s", SDL_GetError());
         SDL_DestroyWindow(g_window);
         SDL_Quit();
@@ -34,15 +36,32 @@ bool initWindow(int width, int height, const char* title){
     }
     rsdl_log("GPU device created");
 
-    if (!SDL_ClaimWindowForGPUDevice(gpu_device, g_window)){
+    if (!SDL_ClaimWindowForGPUDevice(g_gpuDevice, g_window)){
         rsdl_logf("Failed to bind GPU to window : %s", SDL_GetError());
     }
     rsdl_log("GPU bound to window");
 
+    s_isWindow = true;
     return true;
 }
 void closeWindow(void){
     SDL_DestroyWindow(g_window);
     SDL_Quit();
     rsdl_log("Window destroyed");
+}
+
+bool isWindowOpen(void){
+    return s_isWindow;
+}
+
+void checkEvents(){
+    SDL_Event event;
+    while (SDL_PollEvent(&event)){
+        switch (event.type){
+            case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
+            case SDL_EVENT_QUIT:
+                s_isWindow = false; break;
+            default: break;
+        }
+    }
 }

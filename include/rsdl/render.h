@@ -4,11 +4,11 @@
 #include "rsdl/common/structs.h"
 
 // Getters
-EXPORT_MACRO SDL_GPUCommandBuffer* getCurCmdBuffer();
-EXPORT_MACRO SDL_GPURenderPass*    getCurRenderPass();
+EXPORT_MACRO struct SDL_GPUCommandBuffer* getCurCmdBuffer();
+EXPORT_MACRO struct SDL_GPURenderPass*    getCurRenderPass();
 
 // Load cmds.
-EXPORT_MACRO Shader loadShader(const char* vertFile, const char* fragFile);
+EXPORT_MACRO shader loadShader(const char* vertFile, const char* fragFile);
 
 // State
 EXPORT_MACRO void initDraw();
@@ -16,7 +16,7 @@ EXPORT_MACRO void beginDraw();
 EXPORT_MACRO void endDraw();
 
 // Small commands
-EXPORT_MACRO void clearBG(Color c);
+EXPORT_MACRO void setBgColor(clr bgColor);
 // Primitives
-EXPORT_MACRO void drawRectangle(int posX, int posY, int width, int height, Color color);
-EXPORT_MACRO void drawCircle   (int centerX, int centerY, float radius, Color color);
+EXPORT_MACRO void drawRectangle(int posX, int posY, int width, int height, clr color);
+EXPORT_MACRO void drawCircle   (int centerX, int centerY, float radius, clr color);
