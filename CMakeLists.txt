@@ -34,6 +34,14 @@ set(RSDL_BASE
         include/rsdl.h
         src/render/draw.c
         src/render/loaders.c
+        include/rsdl/window.h
+        src/window.c
+        include/rsdl_raylib_wrap.h
+        include/rsdl/common/structs.h
+        include/rsdl/common/enums.h
+        include/rsdl/common/export_macro.h
+        include/rsdl/log.h
+        src/log.c
         # UNSORTED
 )
 

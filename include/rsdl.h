@@ -4,10 +4,10 @@
 extern "C" {
 #endif
 
-#include "rsdl/common.h"
+#include "rsdl/common/color_presets.h"
 // #include "rsdl/all_utils.h"
 #include "rsdl/render.h"
-// #include "rsdl/window.h"
+#include "rsdl/window.h"
 
 #ifdef __cplusplus
 }
