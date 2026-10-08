@@ -16,6 +16,7 @@ inline bool WindowShouldClose(){
     return !isWindowOpen();
 }
 inline void BeginDrawing(){
+    updateDeltaTime();
     beginDraw();
 }
 inline void ClearBackground(clr bgClr){
@@ -23,4 +24,12 @@ inline void ClearBackground(clr bgClr){
 }
 inline void EndDrawing(){
     endDraw();
+    sleepBeforeNextFrame();
+}
+
+inline float GetFrameTime(){
+    return getDeltaFloat();
+}
+inline void SetTargetFPS(int fps){
+    setMaxFPS(fps);
 }

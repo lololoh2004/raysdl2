@@ -42,7 +42,7 @@ set(RSDL_BASE
         include/rsdl/common/export_macro.h
         include/rsdl/log.h
         src/log.c
-        src/window/time.cpp
+        src/window/time.c
         # UNSORTED
 )
 
