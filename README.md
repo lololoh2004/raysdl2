@@ -5,8 +5,8 @@
 [![badge](https://shieldcn.dev/badge/build--gen-CMAKE.svg?size=xs&logo=cmake)](https://github.com/topics/cmake)
 [![badge](https://shieldcn.dev/badge/downoload%20deps.%20via-BAT%20/%20SH.svg?size=xs&logo=ri%3ABsTerminalFill)](https://www.youtube.com/watch?v=gnzYZ_6RmgA)
 
-[![badge](https://shieldcn.dev/badge/license-MIT.svg?size=xs&logo=ri%3APiScalesBold)](https://github.com/lololoh2004/raysdl2/blob/main/LICENSE)
-[![badge](https://shieldcn.dev/github/vercel/next.js/last-commit.svg?size=xs&logo=ri%3APiScalesBold)](https://github.com/lololoh2004/raysdl2/commits)
+[![badge](https://shieldcn.dev/badge/license-MIT.svg?size=xs&logo=ri%3APiScalesBold)](https://github.com/lololoh2004/raysdl3/blob/main/LICENSE)
+[![badge](https://shieldcn.dev/github/vercel/next.js/last-commit.svg?size=xs&logo=ri%3APiScalesBold)](https://github.com/lololoh2004/raysdl3/commits)
 
 
 # RauLib on SDL3 GPU
