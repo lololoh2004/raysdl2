@@ -9,6 +9,7 @@ EXPORT_MACRO void closeWindow (void);
 EXPORT_MACRO bool isWindowOpen(void);
 EXPORT_MACRO void checkEvents (void);
 
+
 EXPORT_MACRO void   updateDeltaTime(void);
 // EXPORT_MACRO void   updateTime(void);
 EXPORT_MACRO float  getDeltaFloat(void);

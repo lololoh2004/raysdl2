@@ -61,5 +61,5 @@ target_link_libraries(${LIB_NAME} PUBLIC
 
 
 # ==== Example ====
-add_executable(example _example/src/main.cpp)
+add_executable(example example/src/main.cpp)
 target_link_libraries(example PRIVATE rsdl)
