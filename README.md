@@ -9,7 +9,7 @@
 [![badge](https://shieldcn.dev/github/vercel/next.js/last-commit.svg?size=xs&logo=ri%3APiScalesBold)](https://github.com/lololoh2004/raysdl3/commits)
 
 
-# RauLib on SDL3 GPU
+# RayLib on SDL3 GPU
 ###### ( I call it rSDL or RaySDL )
 
 ### What is this ??
