@@ -33,7 +33,7 @@ set(RSDL_BASE
         # Base
         include/rsdl.h
         src/render/draw.c
-        src/render/loaders.c
+        src/render/load_shader.c
         include/rsdl/window.h
         src/window/base.c
         include/rsdl_raylib_wrap.h
@@ -43,7 +43,7 @@ set(RSDL_BASE
         include/rsdl/log.h
         src/log.c
         src/window/time.c
-        # UNSORTED
+        include/rsdl/common/default_shaders_content.h
 )
 
 add_library(${LIB_NAME} STATIC

@@ -16,7 +16,7 @@ typedef struct shader {
     struct SDL_GPUShader* vert;
     struct SDL_GPUShader* frag;
 } shader;
-typedef struct Color{
+typedef struct color{
     unsigned char r, g, b, a;
 } clr;
 typedef struct vert{
